@@ -55,18 +55,22 @@ function getCookie(cname) {
 // ============= FORM FILL ============= //
 
 if( formFieldSelector != null ){
-    // ------------------------------------------------------------ check selector
-    // if selector exists
+// ------------------------------------------------------------ check selector
+// if selector exists
 
-        // if timestamp does not exist in form field
-        if(formFieldSelector.value.length <= 0){
-        // --------------------------------------------- formfill
+    // if timestamp does not exist in form field
+    if(formFieldSelector.value.length <= 0){
+    // --------------------------------------------- formfill
             // add timestamp to selector from cookie
             formFieldSelector.value = cookieTimestamp;
             console.log("leadTimestamp added to form");
-        // --------------------------------------------- formfill    
+    // --------------------------------------------- formfill    
+    } else if(formFieldSelector.value.length > 0){
+    // --------------------------------------------- value exists
+        console.log("leadTimestamp exists in form")
+    // --------------------------------------------- value exists    
     }
-    // ------------------------------------------------------------ check selector 
+// ------------------------------------------------------------ check selector 
 } else if( failSafe == true ){
     // ---------------------- failSafe
     if( formFieldSelector == null ){
@@ -97,8 +101,6 @@ if( formFieldSelector != null ){
         // --------------------------------------------------------- check selector
     }
     // ---------------------- failSafe
-} else {
-    console.log("leadTimestamp exists in form")
 }
 // ------------------------------------------- function
 }
