@@ -1,12 +1,26 @@
-// USE JAVASCRIPT SELECTOR QUERY ONLY!
-// document.querySelector()
+<script>
+// PLEASE ONLY USE JAVASCRIPT!
+// document.querySelector('yourElement');
 
-function timestampFormFill(formFieldSelector){
-// ------------------------------------------- function
 // generates a timestamp if one isn't available
 // adds timestamp ( unique ID ) to hidden form field
+// option to generate hidden form field if one does not exist
+// option to append generated form field to existing element
 
-    function getCookie(cname) {
+function timestampFormFill( 
+    formFieldSelector, // the form field you want to insert the TID into
+    appendSelector, // optional ( only works if failsafe is TRUE )
+    failSafeSetting, // True / False
+    appendSetting // True / False
+    ){
+// ------------------------------------------- function
+
+var failSafe = failSafeSetting; // will generate a form field if one isn't available
+var append = appendSetting; // choose wether the formfield should be appended to a master form
+
+// ============= COOKIES ============= //
+
+function getCookie(cname) {
         // ------------------------ getcookie
         var name = cname + "=";
         var ca = document.cookie.split(';');
@@ -18,10 +32,6 @@ function timestampFormFill(formFieldSelector){
         return "";
         // ------------------------ getcookie   
     }
-
-    if( formFieldSelector.length > 0 || formFieldSelector != null ){
-    // -------------------------------- check selector
-    // if selector exists
 
     if(getCookie("leadTimestamp").length <= 0){
         // ---------------------------------------- timestamp   
@@ -36,19 +46,60 @@ function timestampFormFill(formFieldSelector){
             now.setTime(expireTime);
             document.cookie="leadTimestamp="+leadTimestamp+';expires='+now.toGMTString()+';path=/';
 
+            console.log("leadTimestamp generated");
         // ---------------------------------------- timestamp
     }
 
     var cookieTimestamp = getCookie("leadTimestamp");
+
+// ============= FORM FILL ============= //
+
+if( formFieldSelector != null ){
+    // ------------------------------------------------------------ check selector
+    // if selector exists
 
         // if timestamp does not exist in form field
         if(formFieldSelector.value.length <= 0){
         // --------------------------------------------- formfill
             // add timestamp to selector from cookie
             formFieldSelector.value = cookieTimestamp;
+            console.log("leadTimestamp added to form");
         // --------------------------------------------- formfill    
     }
-    // -------------------------------- check selector 
+    // ------------------------------------------------------------ check selector 
+} else if( failSafe == true ){
+    // ---------------------- failSafe
+    if( formFieldSelector == null ){
+        // --------------------------------------------------------- check selector
+        // if selector does not exist     
+
+        if( append == true ){
+                // ------------------ append
+                var inputLEAD = document.createElement("INPUT");
+                appendSelector.appendChild(inputLEAD);
+                inputLEAD.setAttribute("id", "field_transaction_id");
+                inputLEAD.setAttribute("type", "hidden");    
+                console.log("hidden form field appended to form");
+                console.log("leadTimestamp added to form");        
+                // ------------------ append
+            } else {
+                // ----- create in body            
+                var inputLEAD = document.createElement("INPUT");
+                document.body.appendChild(inputLEAD);
+                inputLEAD.setAttribute("id", "field_transaction_id");
+                inputLEAD.setAttribute("type", "hidden");
+                console.log("hidden form field appended to body"); 
+                console.log("leadTimestamp added to form");
+                // ----- create in body
+            }
+
+            document.getElementById('field_transaction_id').value = cookieTimestamp;
+        // --------------------------------------------------------- check selector
+    }
+    // ---------------------- failSafe
+} else {
+    console.log("leadTimestamp exists in form")
 }
 // ------------------------------------------- function
 }
+</script>
